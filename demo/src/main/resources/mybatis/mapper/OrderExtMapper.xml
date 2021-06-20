@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xushu.sharding.demo.mappper.OrderExtMapper">
+    <resultMap id="BaseResultMap" type="com.xushu.sharding.demo.entity.OrderExt">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="order_id" property="orderId" jdbcType="VARCHAR"/>
+        <result column="ext_key" property="extKey" jdbcType="VARCHAR"/>
+        <result column="ext_value" property="extValue" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, order_id, ext_key, ext_value
+    </sql>
+
+    <!--<select id="getAll" resultMap="BaseResultMap"  >-->
+    <!--SELECT -->
+    <!--<include refid="Base_Column_List" />-->
+    <!--FROM users-->
+    <!--</select>-->
+
+    <select id="query" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM order_ext
+        WHERE order_id = #{orderId}
+    </select>
+
+    <insert id="insert" >
+        INSERT INTO
+          order_ext
+        (order_id,ext_key,ext_value)
+        VALUES
+        (#{orderId}, #{orderExt.extKey}, #{orderExt.extValue})
+    </insert>
+
+    <update id="update" parameterType="com.xushu.sharding.demo.entity.OrderExt">
+       UPDATE
+        order_ext
+       SET 
+       	ext_value = #{extValue}
+       WHERE 
+       		order_id = #{orderId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String">
+       DELETE FROM
+       		 order_ext
+       WHERE 
+       		 order_id =#{orderId}
+    </delete>
+
+</mapper>
